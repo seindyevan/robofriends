@@ -4,11 +4,30 @@ import './index.css';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import 'tachyons';
+import {Provider} from 'react-redux'
+import { searchRobots, requestRobots } from './reducers';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+
+
+//create store(rootReducer) --> as there will be many reducer in large scale application
+const logger = createLogger();
+
+const rootReducer = combineReducers({
+  searchRobots, 
+  requestRobots
+});
+
+//applymiddleware () -> ordered
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <Provider store={store}>
+      <App/>  
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
